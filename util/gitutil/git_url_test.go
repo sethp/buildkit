@@ -39,6 +39,15 @@ func TestParseURL(t *testing.T) {
 			},
 		},
 		{
+			url: "http://github.com/moby/buildkit#v1.0.0@REF",
+			result: GitURL{
+				Scheme:   HTTPProtocol,
+				Host:     "github.com",
+				Path:     "/moby/buildkit",
+				Fragment: &GitURLFragment{Ref: "v1.0.0", Pin: "REF"},
+			},
+		},
+		{
 			url: "http://github.com/moby/buildkit#v1.0.0:subdir",
 			result: GitURL{
 				Scheme:   HTTPProtocol,

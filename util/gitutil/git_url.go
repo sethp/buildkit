@@ -62,6 +62,8 @@ type GitURLFragment struct {
 	Ref string
 	// Subdir is the sub-directory inside the git repository to use
 	Subdir string
+	// Pins override the ref, if present
+	Pin string
 }
 
 // splitGitFragment splits a git URL fragment into its respective git
@@ -70,8 +72,9 @@ func splitGitFragment(fragment string) *GitURLFragment {
 	if fragment == "" {
 		return nil
 	}
+	fragment, pin, _ := strings.Cut(fragment, "@")
 	ref, subdir, _ := strings.Cut(fragment, ":")
-	return &GitURLFragment{Ref: ref, Subdir: subdir}
+	return &GitURLFragment{Ref: ref, Subdir: subdir, Pin: pin}
 }
 
 // ParseURL parses a BuildKit-style Git URL (that may contain additional

@@ -13,6 +13,8 @@ import (
 // Examples:
 //   - "https://github.com/foo/bar.git#baz/qux:quux/quuz" is parsed into:
 //     {Remote: "https://github.com/foo/bar.git", ShortName: "bar", Commit:"baz/qux", SubDir: "quux/quuz"}.
+//   - "https://github.com/foo/bar.git#baz/qux:quux/quuz@REF" is parsed into:
+//     {Remote: "https://github.com/foo/bar.git", ShortName: "bar", Commit:"REF", SubDir: "quux/quuz"}.
 type GitRef struct {
 	// Remote is the remote repository path.
 	Remote string
@@ -93,6 +95,9 @@ func ParseGitRef(ref string) (*GitRef, error) {
 	}
 	if remote.Fragment != nil {
 		res.Commit, res.SubDir = remote.Fragment.Ref, remote.Fragment.Subdir
+		if len(remote.Fragment.Pin) > 0 {
+			res.Commit = remote.Fragment.Pin
+		}
 	}
 
 	repoSplitBySlash := strings.Split(res.Remote, "/")

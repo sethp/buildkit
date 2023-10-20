@@ -122,6 +122,15 @@ func TestParseGitRef(t *testing.T) {
 			},
 		},
 		{
+			ref: "https://github.com/foo/bar.git#baz/qux:quux/quuz@REF",
+			expected: &GitRef{
+				Remote:    "https://github.com/foo/bar.git",
+				ShortName: "bar",
+				Commit:    "REF",
+				SubDir:    "quux/quuz",
+			},
+		},
+		{
 			ref:      "http://github.com/docker/docker.git:#branch",
 			expected: nil,
 		},
